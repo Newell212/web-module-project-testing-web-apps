@@ -108,6 +108,31 @@ test('renders all firstName, lastName and email text when submitted. Does NOT re
     })
 });
 
-// test('renders all fields text when all fields are submitted.', async () => {
+test('renders all fields text when all fields are submitted.', async () => {
+    render(<ContactForm/>);
 
-// });
+    const firstNameField = screen.getByLabelText(/first name*/i);
+    const lastNameField = screen.getByLabelText(/last name*/i);
+    const emailField = screen.getByLabelText(/email*/i);
+    const messageField = screen.getByLabelText(/message/i);
+
+    userEvent.type(firstNameField, 'michael');
+    userEvent.type(lastNameField, 'newell');
+    userEvent.type(emailField, 'newell@newell.com');
+    userEvent.type(messageField, 'extatum et oratum');
+
+    const button = screen.getByRole('button');
+    userEvent.click(button);
+
+    await waitFor(() => {
+        const firstNameDisplay = screen.queryByText('michael');
+        const lastNameDisplay = screen.queryByText('newell');
+        const emailDisplay = screen.queryByText('newell@newell.com');
+        const messageDisplay = screen.queryByText('extatum et oratum');
+
+        expect(firstNameDisplay).toBeInTheDocument();
+        expect(lastNameDisplay).toBeInTheDocument();
+        expect(emailDisplay).toBeInTheDocument();
+        expect(messageDisplay).toBeInTheDocument();
+    })
+});
